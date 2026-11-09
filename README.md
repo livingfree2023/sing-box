@@ -1,5 +1,7 @@
 # 【Sing-box 全家桶】
 
+本仓库基于上游项目维护，增加 IPv4 / IPv6 分享地址选择与双栈节点生成。当前仓库：[livingfree2023/sing-box](https://github.com/livingfree2023/sing-box)。
+
 * * *
 
 # 目录
@@ -21,6 +23,7 @@
 - [14.感谢赞助商](README.md#14感谢赞助商)
 - [15.免责声明](README.md#15免责声明)
 - [16.开源证书](README.md#16开源证书)
+- [17.原项目致谢](README.md#17原项目致谢)
 
 
 * * *
@@ -196,7 +199,7 @@
 
 * 首次运行
 ```
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-box.sh)
+bash <(wget -qO- https://raw.githubusercontent.com/livingfree2023/sing-box/main/sing-box.sh)
 ```
 
 * 再次运行
@@ -241,17 +244,17 @@ sb
 ### 方式1. 最快的安装方式：自动补充所有参数
 #### 中文
 ```
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-box.sh) -l
+bash <(wget -qO- https://raw.githubusercontent.com/livingfree2023/sing-box/main/sing-box.sh) -l
 ```
 
 #### 英文
 ```
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-box.sh) -k
+bash <(wget -qO- https://raw.githubusercontent.com/livingfree2023/sing-box/main/sing-box.sh) -k
 ```
 
 ### 方式2. KV 配置文件，内容参照本库里的 config.conf
 ```
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-box.sh) -f config.conf
+bash <(wget -qO- https://raw.githubusercontent.com/livingfree2023/sing-box/main/sing-box.sh) -f config.conf
 ```
 
 ### 方式3. KV 传参，举例
@@ -261,7 +264,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-b
 <br>
 
 ```
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-box.sh) \
+bash <(wget -qO- https://raw.githubusercontent.com/livingfree2023/sing-box/main/sing-box.sh) \
   --LANGUAGE c \
   --CHOOSE_PROTOCOLS a \
   --START_PORT 8881 \
@@ -285,7 +288,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-b
 <br>
 
 ```
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-box.sh) \
+bash <(wget -qO- https://raw.githubusercontent.com/livingfree2023/sing-box/main/sing-box.sh) \
   --LANGUAGE c \
   --CHOOSE_PROTOCOLS a \
   --START_PORT 8881 \
@@ -306,7 +309,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-b
 <br>
 
 ```
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-box.sh) \
+bash <(wget -qO- https://raw.githubusercontent.com/livingfree2023/sing-box/main/sing-box.sh) \
   --LANGUAGE c \
   --CHOOSE_PROTOCOLS a \
   --START_PORT 8881 \
@@ -328,7 +331,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-b
 <br>
 
 ```
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-box.sh) \
+bash <(wget -qO- https://raw.githubusercontent.com/livingfree2023/sing-box/main/sing-box.sh) \
   --LANGUAGE c \
   --CHOOSE_PROTOCOLS a \
   --START_PORT 8881 \
@@ -349,7 +352,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-b
 <br>
 
 ```
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-box.sh) \
+bash <(wget -qO- https://raw.githubusercontent.com/livingfree2023/sing-box/main/sing-box.sh) \
   --LANGUAGE c \
   --CHOOSE_PROTOCOLS a \
   --START_PORT 8881 \
@@ -373,7 +376,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-b
 <br>
 
 ```
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-box.sh) \
+bash <(wget -qO- https://raw.githubusercontent.com/livingfree2023/sing-box/main/sing-box.sh) \
   --LANGUAGE c \
   --CHOOSE_PROTOCOLS a \
   --START_PORT 8881 \
@@ -396,7 +399,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-b
 <br>
 
 ```
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-box.sh) \
+bash <(wget -qO- https://raw.githubusercontent.com/livingfree2023/sing-box/main/sing-box.sh) \
   --LANGUAGE c \
   --CHOOSE_PROTOCOLS a \
   --START_PORT 8881 \
@@ -420,7 +423,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-b
 <br>
 
 ```
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen/sing-box/main/sing-box.sh) \
+bash <(wget -qO- https://raw.githubusercontent.com/livingfree2023/sing-box/main/sing-box.sh) \
   --LANGUAGE c \
   --CHOOSE_PROTOCOLS a \
   --START_PORT 8881 \
@@ -801,3 +804,8 @@ SharonNetworks 为您的业务起飞保驾护航！
 * 本项目严格遵守 GNU GPL v3 许可证 [LICENSE](LICENSE)。
 * 任何形式的复制、分发、修改或衍生使用，必须完整保留原版权声明、许可证文本，并以相同许可证开源发布。违反此条款（如闭源使用、商业独占或未开源修改版）将被视为抄袭，作者保留追究法律责任的权利。
 * 鼓励社区贡献，但请通过 Pull Request 提交。
+
+
+## 17.原项目致谢
+
+本项目基于 [fscarmen/sing-box](https://github.com/fscarmen/sing-box) 修改与维护。感谢原作者 [fscarmen](https://github.com/fscarmen) 及所有上游贡献者提供的脚本、文档与持续维护。本仓库保留原项目的版权声明，并继续遵循 [GNU GPL v3 许可证](LICENSE)。
