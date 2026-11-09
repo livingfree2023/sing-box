@@ -5662,7 +5662,7 @@ export_list() {
   $CLASH_ANYTLS
 "
 
-  [ -n "$PORT_SNELL" ] && local CLASH_SNELL="- {name: \"${NODE_NAME[23]} ${NODE_TAG[12]}\", type: snell, server: ${SERVER_IP}, port: ${PORT_SNELL}, psk: \"${UUID[23]}\", version: 6, mode: default, udp: true }" &&
+  [ -n "$PORT_SNELL" ] && local CLASH_SNELL="- {name: \"${NODE_NAME[23]} ${NODE_TAG[12]}\", type: snell, server: ${SERVER_IP}, port: ${PORT_SNELL}, psk: \"${UUID[23]}\", version: 6, mode: default, udp: true, reuse: true }" &&
   local CLASH_SUBSCRIBE+="
   $CLASH_SNELL
 "
@@ -5750,7 +5750,7 @@ http3://$(echo -n "${UUID[22]}:${UUID[22]}@${SERVER_IP_2}:${PORT_NAIVE}" | base6
 "
 
   [ -n "$PORT_SNELL" ] && local SHADOWROCKET_SUBSCRIBE+="
-snell://$(echo -n "chacha20-ietf-poly1305:${UUID[23]}@${SERVER_IP_1}:${PORT_SNELL}" | base64 -w0)?version=6&mode=default&udp=1#${NODE_NAME[23]// /%20}%20${NODE_TAG[12]}
+snell://$(echo -n "chacha20-ietf-poly1305:${UUID[23]}@${SERVER_IP_1}:${PORT_SNELL}" | base64 -w0)?version=6&mode=default&reuse=1&udp=1#${NODE_NAME[23]// /%20}%20${NODE_TAG[12]}
 "
 
   # 生成 V2rayN 订阅文件
@@ -5776,51 +5776,9 @@ v2rayn://tuic/$(echo -n "{\"ConfigType\":8,\"CoreType\":24,\"ConfigVersion\":4,\
 
   [ -n "$PORT_SHADOWTLS" ] && local V2RAYN_SUBSCRIBE+="
 ----------------------------
-{
-    \"log\": {
-        \"level\": \"warn\"
-    },
-    \"inbounds\": [
-        {
-            \"listen\": \"127.0.0.1\",
-            \"listen_port\": ${PORT_SHADOWTLS},
-            \"tag\": \"${PROTOCOL_LIST[3]}\",
-            \"type\": \"mixed\"
-        }
-    ],
-    \"outbounds\": [
-        {
-            \"detour\": \"shadowtls-out${SHARE_DETOUR_SUFFIX}\",
-            \"method\": \"$SHADOWTLS_METHOD\",
-            \"password\": \"$SHADOWTLS_PASSWORD\",
-            \"type\": \"shadowsocks\",
-            \"udp_over_tcp\": false,
-            \"multiplex\": {
-              \"enabled\": true,
-              \"protocol\": \"h2mux\",
-              \"max_connections\": 8,
-              \"min_streams\": 16,
-              \"padding\": true
-            }
-        },
-        {
-            \"password\": \"${UUID[14]}\",
-            \"server\": \"${SERVER_IP}\",
-            \"server_port\": ${PORT_SHADOWTLS},
-            \"tag\": \"shadowtls-out${SHARE_DETOUR_SUFFIX}\",
-            \"tls\": {
-                \"enabled\": true,
-                \"server_name\": \"${TLS_SERVER}\",
-                \"utls\": {
-                  \"enabled\": true,
-                  \"fingerprint\": \"${FINGER_PRINT}\"
-                }
-            },
-            \"type\": \"shadowtls\",
-            \"version\": 3
-        }
-    ]
-}"
+v2rayn://shadowtls/$(echo -n "{\"IndexId\":\"shadowtls-${UUID[14]}${SHARE_DETOUR_SUFFIX}-1-tls\",\"ConfigType\":13,\"CoreType\":24,\"ConfigVersion\":4,\"Remarks\":\"${NODE_NAME[14]} 1-tls-not-use\",\"CustomOutboundObj\":{\"type\":\"shadowtls\",\"tag\":\"${NODE_NAME[14]} 1-tls-not-use\",\"server\":\"${SERVER_IP}\",\"server_port\":${PORT_SHADOWTLS},\"version\":3,\"password\":\"${UUID[14]}\",\"tls\":{\"enabled\":true,\"server_name\":\"${TLS_SERVER}\",\"utls\":{\"enabled\":true,\"fingerprint\":\"${FINGER_PRINT}\"}}}}" | base64 -w0 | tr '+/' '-_' | tr -d '=')
+v2rayn://shadowsocks/$(echo -n "{\"IndexId\":\"shadowtls-${UUID[14]}${SHARE_DETOUR_SUFFIX}-2-ss\",\"ConfigType\":13,\"CoreType\":24,\"ConfigVersion\":4,\"Remarks\":\"${NODE_NAME[14]} 2-ss-not-use\",\"CustomOutboundObj\":{\"type\":\"shadowsocks\",\"tag\":\"${NODE_NAME[14]} 2-ss-not-use\",\"method\":\"$SHADOWTLS_METHOD\",\"password\":\"$SHADOWTLS_PASSWORD\",\"udp_over_tcp\":false,\"multiplex\":{\"enabled\":true,\"protocol\":\"h2mux\",\"max_connections\":8,\"min_streams\":16,\"padding\":true}}}" | base64 -w0 | tr '+/' '-_' | tr -d '=')
+v2rayn://proxychain/$(echo -n "{\"IndexId\":\"shadowtls-${UUID[14]}${SHARE_DETOUR_SUFFIX}-chain\",\"ConfigType\":102,\"CoreType\":24,\"ConfigVersion\":4,\"Remarks\":\"${NODE_NAME[14]} ${NODE_TAG[3]}\",\"ProtoExtraObj\":{\"ChildItems\":\"shadowtls-${UUID[14]}${SHARE_DETOUR_SUFFIX}-1-tls,shadowtls-${UUID[14]}${SHARE_DETOUR_SUFFIX}-2-ss\"}}" | base64 -w0 | tr '+/' '-_' | tr -d '=')"
   [ -n "$PORT_SHADOWSOCKS" ] && local V2RAYN_SUBSCRIBE+="
 ----------------------------
 ss://$(echo -n "${SHADOWSOCKS_METHOD}:${SHADOWSOCKS_PASSWORD}@${SERVER_IP_1}:$PORT_SHADOWSOCKS" | base64 -w0)#${NODE_NAME[15]// /%20}%20${NODE_TAG[4]}"
@@ -5887,6 +5845,10 @@ v2rayn://naive/$(echo -n "{\"ConfigType\":12,\"CoreType\":24,\"ConfigVersion\":4
 ----------------------------
 v2rayn://naive/$(echo -n "{\"ConfigType\":12,\"CoreType\":24,\"ConfigVersion\":4,\"Remarks\":\"${NODE_NAME[22]} ${NODE_TAG[11]} quic\",\"Address\":\"${SERVER_IP}\",\"Port\":${PORT_NAIVE},\"Password\":\"${UUID[22]}\",\"Username\":\"${UUID[22]}\",\"StreamSecurity\":\"tls\",\"AllowInsecure\":\"false\",\"Sni\":\"${TLS_SERVER}\",\"Cert\":\"${CERT_200_URL_2}\",\"ProtoExtraObj\":{\"CongestionControl\":\"bbr\",\"NaiveQuic\":true}}" | base64 -w0 | tr '+/' '-_' | tr -d '=')"
 
+  [ -n "$PORT_SNELL" ] && local V2RAYN_SUBSCRIBE+="
+----------------------------
+v2rayn://snell/$(echo -n "{\"ConfigType\":13,\"CoreType\":24,\"ConfigVersion\":4,\"Remarks\":\"${NODE_NAME[23]} ${NODE_TAG[12]}\",\"CustomOutboundObj\":{\"type\":\"snell\",\"tag\":\"${NODE_NAME[23]} ${NODE_TAG[12]}\",\"server\":\"${SERVER_IP}\",\"server_port\":${PORT_SNELL},\"version\":6,\"psk\":\"${UUID[23]}\",\"mode\":\"default\",\"reuse\":true}}" | base64 -w0 | tr '+/' '-_' | tr -d '=')"
+
 
   # 生成 Throne 订阅文件
   [ -n "$PORT_XTLS_REALITY" ] && local THRONE_SUBSCRIBE+="
@@ -5912,7 +5874,7 @@ tuic://${TUIC_PASSWORD}:${UUID[13]}@${SERVER_IP_1}:${PORT_TUIC}?congestion_contr
 ----------------------------
 shadowtls://:${UUID[14]}@${SERVER_IP_1}:${PORT_SHADOWTLS}?version=3&security=tls&sni=${TLS_SERVER}&fp=chrome#1-tls-not-use
 
-ss://${SHADOWTLS_METHOD}:${SHADOWTLS_PASSWORD}@127.0.0.1:0#2-ss-not-use"
+ss://${SHADOWTLS_METHOD}:${SHADOWTLS_PASSWORD//\//%2F}@127.0.0.1:0#2-ss-not-use"
 
   [ -n "$PORT_SHADOWSOCKS" ] && local THRONE_SUBSCRIBE+="
 ----------------------------
@@ -5982,7 +5944,7 @@ naive+quic://${UUID[22]}:${UUID[22]}@${SERVER_IP_1}:${PORT_NAIVE}?congestion_con
 
   [ -n "$PORT_SNELL" ] && local THRONE_SUBSCRIBE+="
 ----------------------------
-snell://${UUID[23]}@${SERVER_IP_1}:${PORT_SNELL}?version=6&mode=default#${NODE_NAME[23]// /%20}%20${NODE_TAG[12]}"
+snell://${UUID[23]}@${SERVER_IP_1}:${PORT_SNELL}?version=6&mode=default&reuse=1#${NODE_NAME[23]// /%20}%20${NODE_TAG[12]}"
 
 
   # 生成 Sing-box 订阅文件
@@ -6079,7 +6041,7 @@ snell://${UUID[23]}@${SERVER_IP_1}:${PORT_SNELL}?version=6&mode=default#${NODE_N
   local NODE_REPLACE+="\"${NODE_NAME[22]} ${NODE_TAG[11]} http2\",\"${NODE_NAME[22]} ${NODE_TAG[11]} quic\","
 
   [ -n "$PORT_SNELL" ] &&
-  local OUTBOUND_REPLACE+=" { \"type\": \"snell\", \"tag\": \"${NODE_NAME[23]} ${NODE_TAG[12]}\", \"server\":\"${SERVER_IP}\", \"server_port\": ${PORT_SNELL}, \"version\": 6, \"psk\": \"${UUID[23]}\", \"mode\": \"default\" }," &&
+  local OUTBOUND_REPLACE+=" { \"type\": \"snell\", \"tag\": \"${NODE_NAME[23]} ${NODE_TAG[12]}\", \"server\":\"${SERVER_IP}\", \"server_port\": ${PORT_SNELL}, \"version\": 6, \"psk\": \"${UUID[23]}\", \"mode\": \"default\", \"reuse\": true }," &&
   local NODE_REPLACE+="\"${NODE_NAME[23]} ${NODE_TAG[12]}\","
 
 
@@ -6385,9 +6347,15 @@ change_protocols() {
     [ -n "$v" ] && NODE_NAME_CONFIRM="$v" && break
   done
 
-  # 无既有协议（0 协议或全部删除后重新添加）时，像新安装一样询问节点名称；已有节点名称则沿用
+  # 无既有协议（0 协议或全部删除后重新添加）时，像新安装时一样询问起始端口和节点名称
   if [ "${#REINSTALL_PROTOCOLS[@]}" -gt 0 ] && [ "${#KEEP_PROTOCOLS[@]}" -eq 0 ]; then
-    unset NODE_NAME_CONFIRM
+    unset NODE_NAME_CONFIRM START_PORT
+    (( STEP_NUM++ )) || true
+    hint "\n $(text 60) "
+    for w in "${!INSTALL_PROTOCOLS[@]}"; do
+      [ "$w" -ge 9 ] && hint " $(( w+1 )). ${PROTOCOL_LIST[$(($(asc ${INSTALL_PROTOCOLS[w]}) - 98))]} " || hint " $(( w+1 )) . ${PROTOCOL_LIST[$(($(asc ${INSTALL_PROTOCOLS[w]}) - 98))]} "
+    done
+    input_start_port ${#INSTALL_PROTOCOLS[@]}
     input_node_name
   fi
 

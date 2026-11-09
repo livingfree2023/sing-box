@@ -28,7 +28,7 @@
 
 * * *
 ## 1.更新信息
-2026.11.07 v1.3.30 Add Snell v6 inbound with Throne, Clash Mihomo, Shadowrocket and sing-box client configuration output; 新增 Snell v6 入站，并输出 Throne、Clash Mihomo、Shadowrocket 和 sing-box 客户端配置
+2026.11.07 v1.3.30 Add Snell v6 inbound with V2rayN, Throne, Clash Verge, Shadowrocket and sing-box client configuration output; 新增 Snell v6 入站，并输出 V2rayN、Throne、Clash Verge、Shadowrocket 和 sing-box 客户端配置
 
 2026.10.31 v1.3.29 Hysteria2 流量不再通过 WARP 出站，存量 Hysteria2 专属 WARP 路由自动清理；Hysteria2 Realm 功能保持不变
 
